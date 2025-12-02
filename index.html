@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>빌라 관리비 계산기 PWA</title>
+    <style>
+        /* CSS는 이전과 동일하며, 모바일 최적화를 위한 최소한의 스타일을 유지합니다. */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 15px; background-color: #f4f4f9; }
+        header { text-align: center; margin-bottom: 20px; color: #333; }
+        .section-title { font-size: 1.1em; font-weight: bold; margin-top: 20px; margin-bottom: 10px; border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .input-group input { width: calc(100% - 20px); padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .house-input-container { border: 1px solid #007bff; padding: 10px; margin-bottom: 15px; border-radius: 8px; background-color: #e9f7ff; }
+        .water-meter-group { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 5px; }
+        .water-meter-group > div { flex-grow: 1; }
+        button { width: 100%; padding: 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 1.1em; cursor: pointer; margin-top: 20px; }
+        #add-house-btn { width: auto; padding: 10px 15px; margin: 0; }
+        .result-container { margin-top: 30px; padding: 15px; border: 2px solid #28a745; border-radius: 8px; background-color: #e2ffe8; display: none; }
+        .result-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .result-table th, .result-table td { border: 1px solid #ddd; padding: 8px; text-align: right; }
+        .result-table th { background-color: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>빌라 개별 관리비 정산</h1>
+        <p>수도, 전기, 관리비 내역을 입력해주세요.</p>
+    </header>
+
+    <main>
+        <section>
+            <div class="section-title">💰 총괄 요금 입력 (고지서 기준)</div>
+            <div class="input-group">
+                <label for="total-water">총 수도 요금 (10원 단위)</label>
+                <input type="number" id="total-water" placeholder="예: 45000" required>
+            </div>
+            <div class="input-group">
+                <label for="total-electric">총 공용 전기 요금 (10원 단위)</label>
+                <input type="number" id="total-electric" placeholder="예: 28000" required>
+            </div>
+            <div class="input-group">
+                <label for="fixed-maint-fee">세대당 고정 관리비 금액</label>
+                <input type="number" id="fixed-maint-fee" placeholder="예: 50000" value="50000" required>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title">➕ 세대 관리 (호실 추가)</div>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="new-house-name" placeholder="새 호실 이름 (예: 303호)" style="flex-grow: 1; padding: 10px;">
+                <button type="button" id="add-house-btn" style="width: auto; padding: 10px 15px; margin: 0;">호실 추가</button>
+            </div>
+            <p style="font-size: 0.9em; margin-top: 10px;">현재 등록된 호실: <span id="current-house-list"></span></p>
+        </section>
+
+        <section id="houses-input-area">
+            </section>
+        
+        <button type="button" id="calculate-btn">계산 및 결과 보기</button>
+
+        <section id="results" class="result-container">
+            <div class="section-title">✅ 최종 정산 결과</div>
+            <table class="result-table">
+                <thead>
+                    <tr>
+                        <th>호실</th>
+                        <th>사용량($m^3$)</th>
+                        <th>수도+전기 요금</th>
+                        <th>최종 총 청구액</th>
+                    </tr>
+                </thead>
+                <tbody id="result-tbody">
+                    </tbody>
+            </table>
+            <button type="button" id="capture-btn" style="background-color: #28a745; margin-top: 15px;">화면 캡처하여 저장</button>
+        </section>
+
+        <section id="history-section">
+             <div class="section-title">⏱️ 저장된 정산 기록</div>
+             <ul id="history-list">
+                 </ul>
+        </section>
+    </main>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
+    <script src="calculator.js"></script>
+</body>
+</html>
